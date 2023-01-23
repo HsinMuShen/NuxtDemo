@@ -5,7 +5,7 @@ h1 a single user {{ $route.params.id }}
 <script>
   export default {
     validate(data) {
-      // console.log(data)
+      console.log(data)
       return true
     },
   }
