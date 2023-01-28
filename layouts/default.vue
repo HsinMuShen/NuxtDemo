@@ -1,20 +1,22 @@
 <template lang="pug">
-div
-  header header
-  nuxt
+  div
+    TheHeader(@sidenavToggle='disPlaySidenav = !disPlaySidenav')
+    TheSidenav(:show='disPlaySidenav', @close="disPlaySidenav=flase")
+    nuxt
 </template>
 
 <script>
+  import TheHeader from '~/components/Navigation/TheHeader'
+  import TheSidenav from '~/components/Navigation/TheSidenav'
   export default {
+    components: {
+      TheHeader,
+      TheSidenav,
+    },
     data() {
       return {
-        userId: '',
+        disPlaySidenav: false,
       }
-    },
-    methods: {
-      onLoadUser() {
-        this.$router.push('/users/' + this.userId)
-      },
     },
   }
 </script>
