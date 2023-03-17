@@ -2,7 +2,7 @@
   .home-page
     .intro
       h1 get the latest tech news
-    post-list
+    post-list(:posts='loadedPosts')
     
 </template>
 
@@ -11,6 +11,11 @@
   export default {
     components: {
       PostList,
+    },
+    computed: {
+      loadedPosts() {
+        return this.$store.getters.loadedPosts
+      },
     },
   }
 </script>

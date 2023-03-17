@@ -1,14 +1,33 @@
 <template lang="pug">
 .single-post-page
   section.post    
-    h1.post-title title
+    h1.post-title {{loadedPost.title}}
     .post-details
-      .post-detail last update on XXX 
-      .post-detail written by NAME 
-    p.post-content content on the post 
+      .post-detail {{loadedPost.updatedDate}}
+      .post-detail {{loadedPost.author}}
+    p.post-content {{loadedPost.content}}
   section.post-feedback
     p let me know what you think about the post
 </template>
+
+<script>
+  import axios from 'axios'
+
+  export default {
+    asyncData(context) {
+      return axios
+        .get(
+          `https://nuxt-blog-6aadc-default-rtdb.asia-southeast1.firebasedatabase.app/posts/${context.params.id}.json`
+        )
+        .then((res) => {
+          console.log(res.data)
+          return {
+            loadedPost: res.data,
+          }
+        })
+    },
+  }
+</script>
 
 <style lang="stylus" scoped>
   .single-post-page {

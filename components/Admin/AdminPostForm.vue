@@ -2,9 +2,11 @@
   form(@submit.prevent='onSave')
     app-control-input(v-model="editedPost.author") Author Name 
     app-control-input(v-model="editedPost.title") Title
-    app-control-input(v-model="editedPost.thumbnailLink") Thumbnail Link
+    app-control-input(v-model="editedPost.thumbnail") Thumbnail Link
     app-control-input(control-type="textarea",
       v-model="editedPost.content") Content
+    app-control-input(control-type="textarea",
+      v-model="editedPost.previewText") Preview Text
     app-button(type='submit') Save
     app-button(
       type="button",
@@ -34,13 +36,16 @@
           : {
               author: '',
               title: '',
-              thumbnailLink: '',
+              thumbnail: '',
               content: '',
+              previewText: '',
             },
       }
     },
     methods: {
-      onSave() {},
+      onSave() {
+        this.$emit('submit', this.editedPost)
+      },
       onCancel() {
         this.$router.push('/admin')
       },

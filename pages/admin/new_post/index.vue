@@ -1,7 +1,7 @@
 <template lang="pug">
   .admin-new-post-page
     section.new-post-form
-      admin-post-form
+      admin-post-form(@submit='onSubmitted')
 </template>
 
 <script>
@@ -10,6 +10,14 @@
   export default {
     components: {
       AdminPostForm,
+    },
+    methods: {
+      onSubmitted(postData) {
+        this.$store.dispatch('addPost', postData).then(() => {
+          console.log('added', postData)
+          this.$router.push('/admin')
+        })
+      },
     },
   }
 </script>
