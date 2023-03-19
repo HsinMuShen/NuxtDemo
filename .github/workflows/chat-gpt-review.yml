@@ -62,6 +62,7 @@ jobs:
         with:
           debug: false
           action: score
+          $diff: ${{ github.event.pull_request.diff_url }}
 
       - uses: unsafecoerce/chatgpt-action@main
         env:
