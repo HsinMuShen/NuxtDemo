@@ -20,7 +20,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           MODEL: text-davinci-002
-          LANGUAGE: en
+          LANGUAGE: Chinese
           top_p: 0.5
           temperature: 0.5
 
