@@ -6,7 +6,6 @@
 
 <script>
   import AdminPostForm from '~/components/Admin/AdminPostForm'
-  // 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
 
   export default {
     components: {
