@@ -24,7 +24,6 @@ jobs:
           top_p: 0.5
           temperature: 0.5
 
-    steps:
       - name: ChatGTP explain code
         uses: cirolini/chatgpt-github-actions@v1.3
         with:
