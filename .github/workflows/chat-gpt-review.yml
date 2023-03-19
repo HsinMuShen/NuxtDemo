@@ -1,4 +1,4 @@
-name: let chatGPT review my code
+name: Code Review
 
 permissions:
   contents: read
@@ -9,14 +9,17 @@ on:
     types: [opened, reopened, synchronize]
 
 jobs:
-  test:
+  code_review:
     runs-on: ubuntu-latest
     steps:
-      - uses: anc95/ChatGPT-CodeReview@main
-        env:
+      - uses: actions/checkout@v2
+
+      - name: ChatGPT Code Review
+        uses: anc95/ChatGPT-CodeReview@main
+        with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          # Optional
           MODEL: 'text-davinci-002'
-          top_p: 1
-          temperature: 0.5
+          LANGUAGE: 'en'
+          top_p: '0.5'
+          temperature: '0.5'
