@@ -1,3 +1,40 @@
+# name: Code Review
+
+# permissions:
+#   contents: read
+#   pull-requests: write
+
+# on:
+#   pull_request:
+#     types: [opened, reopened, synchronize]
+
+# jobs:
+#   code_review:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
+
+#       - name: ChatGPT Code Review
+#         uses: anc95/ChatGPT-CodeReview@main
+#         with:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+#           MODEL: text-davinci-002
+#           LANGUAGE: Chinese
+#           top_p: 0.5
+#           temperature: 0.5
+
+#       - name: ChatGTP explain code
+#         uses: cirolini/chatgpt-github-actions@v1.3
+#         with:
+#           openai_api_key: ${{ secrets.OPENAI_API_KEY }}
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           github_pr_id: ${{ github.event.number }}
+#           openai_engine: 'text-davinci-002' #optional
+#           openai_temperature: 0.5 #optional
+#           openai_max_tokens: 2048 #optional
+#           mode: file # file or patch
+
 name: Code Review
 
 permissions:
@@ -6,31 +43,32 @@ permissions:
 
 on:
   pull_request:
-    types: [opened, reopened, synchronize]
 
 jobs:
-  code_review:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - name: ChatGPT Code Review
-        uses: anc95/ChatGPT-CodeReview@main
+      - uses: actions/checkout@v3
         with:
+          repository: ${{github.event.pull_request.head.repo.full_name}}
+          ref: ${{github.event.pull_request.head.ref}}
+          submodules: false
+
+      - uses: unsafecoerce/chatgpt-action@main
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CHATGPT_ACCESS_TOKEN: ${{ secrets.CHATGPT_ACCESS_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          MODEL: text-davinci-002
-          LANGUAGE: Chinese
-          top_p: 0.5
-          temperature: 0.5
-
-      - name: ChatGTP explain code
-        uses: cirolini/chatgpt-github-actions@v1.3
         with:
-          openai_api_key: ${{ secrets.OPENAI_API_KEY }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          github_pr_id: ${{ github.event.number }}
-          openai_engine: 'text-davinci-002' #optional
-          openai_temperature: 0.5 #optional
-          openai_max_tokens: 2048 #optional
-          mode: file # file or patch
+          debug: false
+          action: score
+
+      - uses: unsafecoerce/chatgpt-action@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CHATGPT_ACCESS_TOKEN: ${{ secrets.CHATGPT_ACCESS_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        with:
+          debug: false
+          action: review
+          review_comment_lgtm: true
