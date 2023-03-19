@@ -14,7 +14,7 @@
     methods: {
       onSubmitted(postData) {
         this.$store.dispatch('addPost', postData).then(() => {
-          console.log('added', postData)
+          console.log('test if the code review get it', postData)
           this.$router.push('/admin')
         })
       },
