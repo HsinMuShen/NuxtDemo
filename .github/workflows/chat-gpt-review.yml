@@ -99,6 +99,7 @@ jobs:
       - name: Generate response
         id: generate-response
         run: |
+          echo "action_state: ${{ env.action_state }}"
           response=$(curl https://api.openai.com/v1/completions \
             -X POST \
             -H "Content-Type: application/json" \
