@@ -106,10 +106,11 @@ jobs:
             }")
           echo "Response data: $response"
           echo "Response data: $(echo $response | jq -c '.' | tr -d '\n')"
-          # echo "::set-output name=response-data::$response"
-          echo "RESPONSE=response" >> $GITHUB_ENV
+          echo "action_state=yellow" >> $GITHUB_ENV
+          echo "response=$response" >> $GITHUB_ENV
           echo "ENV: ${{ env }}"
-          echo "RESPONSE_ENV: ${{ env.RESPONSE }}"
+          echo "action_state: ${{ env.action_state }}"
+          echo "RESPONSE_ENV: ${{ env.response }}"
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
   comment-on-pr:
