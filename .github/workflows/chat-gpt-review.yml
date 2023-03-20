@@ -122,7 +122,6 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            console.log('start cemment!', '${{response}}')
             console.log('RESPONSE: ', process.env);
             const response = JSON.parse('${{ env.RESPONSE }}');
             console.log('response', response)
