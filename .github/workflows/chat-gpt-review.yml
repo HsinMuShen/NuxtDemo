@@ -118,7 +118,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             console.log('RESPONSE: ', $response);
-            console.log('r2', ${{$response}})
             const response = JSON.parse('${{ env.RESPONSE }}');
             console.log('response', response)
             const comment = `Generated response: ${response.choices[0].text || response.completions[0].text}`;
