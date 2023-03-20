@@ -115,8 +115,8 @@ jobs:
       - name: Get response data from generateResponse
         id: get-response-data
         run: |
-        echo "getResponseData: ${{ needs.generateResponse.outputs.response-data }}"
-        echo "::set-output name=response-data::${{ needs.generateResponse.outputs.response-data }}"
+          echo "getResponseData: ${{ needs.generateResponse.outputs.response-data }}"
+          echo "::set-output name=response-data::${{ needs.generateResponse.outputs.response-data }}"
       - name: Post comment on PR
         uses: actions/github-script@v4
         with:
