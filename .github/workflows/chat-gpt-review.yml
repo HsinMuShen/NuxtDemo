@@ -86,6 +86,8 @@ env:
 jobs:
   generateResponse:
     runs-on: ubuntu-latest
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -112,8 +114,6 @@ jobs:
           echo "response=$response" >> $GITHUB_ENV
           echo "ENV: ${{ env }}"        
           echo "RESPONSE_ENV: ${{ env.response }}"
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
   comment-on-pr:
     needs: generateResponse
     runs-on: ubuntu-latest
