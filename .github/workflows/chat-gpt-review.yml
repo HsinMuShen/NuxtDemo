@@ -129,7 +129,7 @@ jobs:
           script: |
             console.log('start cemment!')
             console.log('env: ', process.env)
-            console.log('RESPONSE_ENV: ', process.env.RESPONSE)
+            console.log('RESPONSE_ENV: ', process.env.RESPONSE, '${{ steps.generate-response.outputs.RESPONSE }}')
             const response = JSON.parse(process.env.RESPONSE);
             console.log('response', response)
             const comment = `Generated response: ${response.choices[0].text || response.completions[0].text}`;
