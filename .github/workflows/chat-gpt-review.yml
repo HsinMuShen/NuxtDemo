@@ -90,7 +90,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Install dependencies
-        run: yarn add axios
+        run: yarn add axios jq
       - name: Generate response
         id: generate-response
         run: |
@@ -105,8 +105,9 @@ jobs:
               \"model\": \"text-davinci-003\"
             }")
           echo "Response data: $response"
+          echo "Response data: $(echo $response | jq -c '.' | tr -d '\n')"
           # echo "::set-output name=response-data::$response"
-          echo "RESPONSE=$response" >> $GITHUB_ENV
+          echo "RESPONSE=$(echo $response | jq -c '.' | tr -d '\n')" >> $GITHUB_ENV
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
   comment-on-pr:
