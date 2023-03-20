@@ -35,6 +35,7 @@
     "eslint-plugin-vue": "^9.5.1",
     "prettier": "^2.7.1",
     "pug-plugin": "^4.9.2",
-    "stylus": "^0.59.0"
+    "stylus": "^0.59.0",
+    "webpack": "^4.44.2"
   }
 }

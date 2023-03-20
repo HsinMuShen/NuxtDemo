@@ -1,6 +1,30 @@
 import { Store } from 'vuex'
 import axios from 'axios'
 
+async function generateResponse(prompt) {
+  try {
+    const response = await axios.post(
+      'https://api.openai.com/v1/completions',
+      {
+        prompt,
+        max_tokens: 1024,
+        temperature: 0.5,
+        model: 'text-davinci-003',
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        },
+      }
+    )
+
+    console.log(response.data.choices[0].text)
+  } catch (error) {
+    console.log(error.response.data)
+  }
+}
+
 const createStore = () => {
   return new Store({
     state: {
@@ -20,6 +44,7 @@ const createStore = () => {
     },
     actions: {
       nuxtServerInit(vuexContext, context) {
+        generateResponse('what is the meaning if life?')
         return axios
           .get(process.env.baseUrl + '/posts.json')
           .then((res) => {

@@ -35,41 +35,95 @@
 #           openai_max_tokens: 2048 #optional
 #           mode: file # file or patch
 
-name: Code Review
+# name: Code Review
 
-permissions:
-  contents: read
-  pull-requests: write
+# permissions:
+#   contents: read
+#   pull-requests: write
+
+# on:
+#   pull_request:
+#     types: [opened, reopened, synchronize]
+
+# jobs:
+#   test:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
+#         with:
+#           repository: ${{github.event.pull_request.head.repo.full_name}}
+#           ref: ${{github.event.pull_request.head.ref}}
+#           submodules: false
+
+#       - uses: unsafecoerce/chatgpt-action@main
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#           CHATGPT_ACCESS_TOKEN: ${{ secrets.CHATGPT_ACCESS_TOKEN }}
+#           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+#         with:
+#           debug: true
+#           action: score
+
+#       - uses: unsafecoerce/chatgpt-action@main
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#           CHATGPT_ACCESS_TOKEN: ${{ secrets.CHATGPT_ACCESS_TOKEN }}
+#           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+#         with:
+#           debug: true
+#           action: review
+#           review_comment_lgtm: true
+
+name: Chat GPT Review
 
 on:
   pull_request:
-    types: [opened, reopened, synchronize]
+    types: [opened, reopened, synchronize, edited]
+
+env:
+  PROMPT: 'Hello, can you help me with my project?'
 
 jobs:
-  test:
+  generateResponse:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-        with:
-          repository: ${{github.event.pull_request.head.repo.full_name}}
-          ref: ${{github.event.pull_request.head.ref}}
-          submodules: false
-
-      - uses: unsafecoerce/chatgpt-action@main
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install axios
+      - name: Generate response
+        id: generate-response
+        run: |
+          response=$(curl https://api.openai.com/v1/completions \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.OPENAI_API_KEY }}" \
+            -d "{
+              \"prompt\": \"${{ env.PROMPT }}\",
+              \"max_tokens\": 1024,
+              \"temperature\": 0.5,
+              \"model\": \"text-davinci-003\"
+            }")
+          echo "::set-output name=response-data::$response"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CHATGPT_ACCESS_TOKEN: ${{ secrets.CHATGPT_ACCESS_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  comment-on-pr:
+    needs: generateResponse
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get response data from generateResponse
+        id: get-response-data
+        run: echo "::set-output name=response-data::${{ needs.generateResponse.outputs.response-data }}"
+      - name: Post comment on PR
+        uses: actions/github-script@v4
         with:
-          debug: true
-          action: score
-
-      - uses: unsafecoerce/chatgpt-action@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CHATGPT_ACCESS_TOKEN: ${{ secrets.CHATGPT_ACCESS_TOKEN }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        with:
-          debug: true
-          action: review
-          review_comment_lgtm: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const response = JSON.parse('${{ steps.get-response-data.outputs.response-data }}');
+            const comment = `Generated response: ${response.choices[0].text}`;
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment,
+            });
