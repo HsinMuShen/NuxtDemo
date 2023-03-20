@@ -104,19 +104,15 @@ jobs:
               \"temperature\": 0.5,
               \"model\": \"text-davinci-003\"
             }")
-          echo "Response data: $response"
-          echo "::set-env name=RESPONSE::$(echo $response | jq -r '.')"
+          echo "::set-env name=RESPONSE::$response"
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
   comment-on-pr:
     needs: generateResponse
     runs-on: ubuntu-latest
+    env:
+      RESPONSE: ${{ env.RESPONSE }}
     steps:
-      - name: Get response data from generateResponse
-        id: get-response-data
-        run: |
-          echo "Output: ${JSON.stringify(needs.generateResponse.outputs)}}"
-          echo "getResponseData: ${{ needs.generateResponse.outputs.response-data }} ${{needs.generateResponse.outputs}}"
       - name: Post comment on PR
         uses: actions/github-script@v4
         with:
