@@ -80,13 +80,12 @@ on:
   pull_request:
     types: [opened, reopened, synchronize, edited]
 
-env:
-  PROMPT: 'Hello, can you tell me what is the meaning of life?'
-  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-
 jobs:
   generateResponse:
     runs-on: ubuntu-latest
+    env:
+      PROMPT: 'Hello, can you tell me what is the meaning of life?'
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
