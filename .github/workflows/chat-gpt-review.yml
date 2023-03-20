@@ -113,6 +113,15 @@ jobs:
           echo "RESPONSE_ENV: ${{ env.response }}"
           echo $action_state
       - name: Post comment on PR
-        # uses: actions/github-script@v4
-        run: |
-          echo $response
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run: |
+            echo "Response: $response"
+            comment="Generated response: $(echo $response | jq -r '.choices[0].text // .completions[0].text')"
+            echo "Comment: $comment"
+            graphql=$(jq -n --arg body "$comment" '{
+              query: "mutation { addComment(input: { body: $body, subjectId: \\"'"${GITHUB_REPOSITORY}/pull/${{ github.event.pull_request.number }}"'\\" }) { commentEdge { node { id } } } }"
+            }')
+            result=$(curl -X POST -H "Authorization: bearer ${{ secrets.GITHUB_TOKEN }}" -H "Content-Type: application/json" -d "$graphql" "https://api.github.com/graphql")
+            echo "Result: $result"
