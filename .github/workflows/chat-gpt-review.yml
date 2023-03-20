@@ -107,7 +107,7 @@ jobs:
           echo "Response data: $response"
           echo "Response data: $(echo $response | jq -c '.' | tr -d '\n')"
           # echo "::set-output name=response-data::$response"
-          echo "RESPONSE=$(echo $response | jq -c '.' | tr -d '\n')" >> $GITHUB_ENV
+          echo "RESPONSE=$(echo $response | jq -c '.' | tr -d '\n')" >> $GITHUB_OUTPUT
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
   comment-on-pr:
@@ -128,8 +128,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             console.log('start cemment!')
-            console.log('env: ', process.env)
-            console.log('RESPONSE_ENV: ', process.env.RESPONSE, '${{ steps.generate-response.outputs.RESPONSE }}')
+            console.log('RESPONSE_ENV: ', '${{ steps.generate-response.outputs.RESPONSE }}')
             const response = JSON.parse(process.env.RESPONSE);
             console.log('response', response)
             const comment = `Generated response: ${response.choices[0].text || response.completions[0].text}`;
