@@ -108,6 +108,7 @@ jobs:
           echo "Response data: $(echo $response | jq -c '.' | tr -d '\n')"
           # echo "::set-output name=response-data::$response"
           echo "RESPONSE=$response" >> $GITHUB_ENV
+          echo "ENV: ${{ env }}"
           echo "RESPONSE_ENV: ${{ env.RESPONSE }}"
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
