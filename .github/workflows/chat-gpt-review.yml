@@ -125,6 +125,7 @@ jobs:
           script: |
             # console.log('responseData', '${{ steps.get-response-data.outputs.response-data }}')
             # const response = JSON.parse('${{ steps.get-response-data.outputs.response-data }}');
+            console.log(${{ env }})
             console.log('${{ env.RESPONSE }}')
             const response = JSON.parse('${{ env.RESPONSE }}');
             console.log('response', response)
