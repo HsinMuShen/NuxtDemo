@@ -114,16 +114,5 @@ jobs:
           echo $action_state
       - name: Post comment on PR
         uses: actions/github-script@v4
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            console.log('RESPONSE: ', $response);
-            const response = JSON.parse('${{ env.RESPONSE }}');
-            console.log('response', response)
-            const comment = `Generated response: ${response.choices[0].text || response.completions[0].text}`;
-            github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: comment,
-            });
+        run: |
+          echo $response
