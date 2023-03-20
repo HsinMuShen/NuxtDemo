@@ -112,7 +112,6 @@ jobs:
             }")
           echo "Response data: $response"
           echo "response=$response" >> $GITHUB_ENV
-          echo "ENV: ${{ env }}"        
           echo "RESPONSE_ENV: ${{ env.response }}"
           echo $action_state
   comment-on-pr:
