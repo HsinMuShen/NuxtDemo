@@ -80,24 +80,20 @@ on:
   pull_request:
     types: [opened, reopened, synchronize, edited]
 
+env:
+  PROMPT: 'Hello, can you tell me what is the meaning of life?'
+
 jobs:
   generateResponse:
     runs-on: ubuntu-latest
-    env:
-      PROMPT: 'Hello, can you tell me what is the meaning of life?'
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Install dependencies
         run: yarn add axios
-      - name: echo env
-        run: |
-          echo "action_state=yellow" >> $GITHUB_ENV
       - name: Generate response
         id: generate-response
         run: |
-          echo "action_state: ${{ env.action_state }}"
           response=$(curl https://api.openai.com/v1/completions \
             -X POST \
             -H "Content-Type: application/json" \
@@ -109,19 +105,30 @@ jobs:
               \"model\": \"text-davinci-003\"
             }")
           echo "Response data: $response"
-          echo "response=$response" >> $GITHUB_ENV
-          echo "RESPONSE_ENV: ${{ env.response }}"
-          echo $action_state
+          echo "::set-env name=RESPONSE::$(echo $response | jq -r '.')"
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  comment-on-pr:
+    needs: generateResponse
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get response data from generateResponse
+        id: get-response-data
+        run: |
+          echo "Output: ${JSON.stringify(needs.generateResponse.outputs)}}"
+          echo "getResponseData: ${{ needs.generateResponse.outputs.response-data }} ${{needs.generateResponse.outputs}}"
       - name: Post comment on PR
         uses: actions/github-script@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          run: |
-            echo "Response: $response"
-            comment="Generated response: $(echo $response | jq -r '.choices[0].text // .completions[0].text')"
-            echo "Comment: $comment"
-            graphql=$(jq -n --arg body "$comment" '{
-              query: "mutation { addComment(input: { body: $body, subjectId: \\"'"${GITHUB_REPOSITORY}/pull/${{ github.event.pull_request.number }}"'\\" }) { commentEdge { node { id } } } }"
-            }')
-            result=$(curl -X POST -H "Authorization: bearer ${{ secrets.GITHUB_TOKEN }}" -H "Content-Type: application/json" -d "$graphql" "https://api.github.com/graphql")
-            echo "Result: $result"
+          script: |
+            console.log('RESPONSE: ', process.env.RESPONSE);
+            const response = JSON.parse(process.env.RESPONSE);
+            console.log('response', response)
+            const comment = `Generated response: ${response.choices[0].text || response.completions[0].text}`;
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment,
+            });
