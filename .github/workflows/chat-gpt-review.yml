@@ -105,7 +105,6 @@ jobs:
               \"model\": \"text-davinci-003\"
             }")
           echo "Response data: $response"
-          echo "Response data: $(echo $response | jq -c '.' | tr -d '\n')"
           echo "action_state=yellow" >> $GITHUB_ENV
           echo "response=$response" >> $GITHUB_ENV
           echo "ENV: ${{ env }}"
