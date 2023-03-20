@@ -91,7 +91,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Install dependencies
-        run: yarn add axios jq
+        run: yarn add axios
       - name: echo env
         run: |
           echo "action_state=yellow" >> $GITHUB_ENV
@@ -113,6 +113,7 @@ jobs:
           echo "response=$response" >> $GITHUB_ENV
           echo "ENV: ${{ env }}"        
           echo "RESPONSE_ENV: ${{ env.response }}"
+          echo $action_state
   comment-on-pr:
     needs: generateResponse
     runs-on: ubuntu-latest
@@ -122,7 +123,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            console.log('start cemment!', '${{env}}')
+            console.log('start cemment!', '${{response}}')
             console.log('RESPONSE: ', process.env);
             const response = JSON.parse('${{ env.RESPONSE }}');
             console.log('response', response)
