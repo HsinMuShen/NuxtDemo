@@ -91,6 +91,10 @@ jobs:
         uses: actions/checkout@v2
       - name: Install dependencies
         run: yarn add axios jq
+      - name: echo env
+        run: |
+          echo "action_state=yellow" >> $GITHUB_ENV
+          echo "action_state: ${{ env.action_state }}"
       - name: Generate response
         id: generate-response
         run: |
@@ -105,10 +109,8 @@ jobs:
               \"model\": \"text-davinci-003\"
             }")
           echo "Response data: $response"
-          echo "action_state=yellow" >> $GITHUB_ENV
           echo "response=$response" >> $GITHUB_ENV
-          echo "ENV: ${{ env }}"
-          echo "action_state: ${{ env.action_state }}"
+          echo "ENV: ${{ env }}"        
           echo "RESPONSE_ENV: ${{ env.response }}"
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
