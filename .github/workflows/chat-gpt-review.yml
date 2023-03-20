@@ -105,8 +105,8 @@ jobs:
               \"model\": \"text-davinci-003\"
             }")
           echo "Response data: $response"
-          # echo "::set-output name=response-data::$response"
-          echo "RESPONSE=$response" >> $GITHUB_ENV
+          echo "::set-output name=response-data::$response"
+          # echo "RESPONSE=$response" >> $GITHUB_ENV
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
   comment-on-pr:
@@ -116,18 +116,19 @@ jobs:
       - name: Get response data from generateResponse
         id: get-response-data
         run: |
-          # echo "getResponseData: ${{ needs.generateResponse.outputs.response-data }} ${{needs.generateResponse.outputs}}"
-          # echo "::set-output name=response-data::${{ needs.generateResponse.outputs.response-data }}"
+          echo "Output: ${JSON.stringify(needs.generateResponse.outputs)}}"
+          echo "getResponseData: ${{ needs.generateResponse.outputs.response-data }} ${{needs.generateResponse.outputs}}"
+          echo "::set-output name=response-data::${{ needs.generateResponse.outputs.response-data }}"
       - name: Post comment on PR
         uses: actions/github-script@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            # console.log('responseData', '${{ steps.get-response-data.outputs.response-data }}')
-            # const response = JSON.parse('${{ steps.get-response-data.outputs.response-data }}');
-            console.log(${{ env }})
-            console.log('${{ env.RESPONSE }}')
-            const response = JSON.parse('${{ env.RESPONSE }}');
+            console.log('responseData', '${{ steps.get-response-data.outputs.response-data }}')
+            const response = JSON.parse('${{ steps.get-response-data.outputs.response-data }}');
+            # console.log('env: ${{ env }}')
+            # console.log('RESPONSE_ENV: ${{ env.RESPONSE }}')
+            # const response = JSON.parse('${{ env.RESPONSE }}');
             console.log('response', response)
             const comment = `Generated response: ${response.choices[0].text || response.completions[0].text}`;
             github.issues.createComment({
