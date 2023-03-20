@@ -129,9 +129,9 @@ jobs:
           script: |
             # const response = JSON.parse('${{ steps.get-response-data.outputs.response-data }}');
             console.log('start cemment!')
-            console.log('env: ${{ env }}')
-            console.log('RESPONSE_ENV: ${{ env.RESPONSE }}')
-            const response = JSON.parse('${{ env.RESPONSE }}');
+            console.log('env: ', process.env)
+            console.log('RESPONSE_ENV: ', process.env.RESPONSE)
+            const response = JSON.parse(process.env.RESPONSE);
             console.log('response', response)
             const comment = `Generated response: ${response.choices[0].text || response.completions[0].text}`;
             github.issues.createComment({
