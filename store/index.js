@@ -1,6 +1,6 @@
 import { Store } from 'vuex'
 import axios from 'axios'
-console.log(1111111111110001)
+console.log(111111111111001)
 
 async function generateResponse(prompt) {
   try {
