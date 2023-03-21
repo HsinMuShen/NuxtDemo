@@ -1,9 +1,8 @@
 # name: Chat GPT Review
 
-# on:
-#   pull_request:
-#     types: [opened, reopened, synchronize, edited]
-
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, edited]
 # env:
 #   PROMPT: 'Hello, can you tell me what is the meaning of life?'
 
