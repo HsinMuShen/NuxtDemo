@@ -62,7 +62,7 @@ const createStore = () => {
     },
     getters: {
       loadedPosts(state) {
-        console.log(111111)
+        console.log(1111111)
         return state.loadedPosts
       },
     },
