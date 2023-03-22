@@ -14,7 +14,7 @@
     methods: {
       onSubmitted(postData) {
         this.$store.dispatch('addPost', postData).then(() => {
-          console.log(11111)
+          console.log(111111)
           this.$router.push('/admin')
         })
       },
