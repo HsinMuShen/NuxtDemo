@@ -1,7 +1,7 @@
 import { Store } from 'vuex'
 import axios from 'axios'
 
-console.log(11111)
+console.log(1111)
 
 const createStore = () => {
   return new Store({
@@ -62,6 +62,7 @@ const createStore = () => {
     },
     getters: {
       loadedPosts(state) {
+        console.log(11111111)
         return state.loadedPosts
       },
     },
