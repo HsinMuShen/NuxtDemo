@@ -1,8 +1,6 @@
 import { Store } from 'vuex'
 import axios from 'axios'
 
-console.log(11111)
-
 const createStore = () => {
   return new Store({
     state: {
