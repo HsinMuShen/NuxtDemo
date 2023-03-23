@@ -55,7 +55,7 @@ const createStore = () => {
           .catch((err) => console.log(err))
       },
       setPosts(context, posts) {
-        context.commit('setPosts', posts)
+        context.commit('setPosts!', posts)
       },
     },
     getters: {
