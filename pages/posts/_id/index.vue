@@ -15,16 +15,12 @@
 
   export default {
     asyncData(context) {
-      return axios
-        .get(
-          `https://nuxt-blog-6aadc-default-rtdb.asia-southeast1.firebasedatabase.app/posts/${context.params.id}.json`
-        )
-        .then((res) => {
-          console.log(res.data)
-          return {
-            loadedPost: res.data,
-          }
-        })
+      return axios.get(process.env.baseUrl + `/posts/${context.params.id}.json`).then((res) => {
+        console.log(res.data)
+        return {
+          loadedPost: res.data,
+        }
+      })
     },
   }
 </script>
