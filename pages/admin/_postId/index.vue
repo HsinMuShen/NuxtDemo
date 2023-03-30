@@ -7,7 +7,7 @@
 <script>
   import axios from 'axios'
   import AdminPostForm from '~/components/Admin/AdminPostForm'
-
+  console.log(111)
   export default {
     components: {
       AdminPostForm,
