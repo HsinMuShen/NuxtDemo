@@ -56,7 +56,6 @@ const createStore = () => {
       },
       setPosts(context, posts) {
         context.commit('setPosts', posts)
-        context.commit('raedPosts!!', posts)
       },
     },
     getters: {
