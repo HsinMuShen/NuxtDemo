@@ -13,7 +13,6 @@
     },
     methods: {
       onSubmitted(postData) {
-        console.log(1111111)
         this.$store.dispatch('addPost', postData).then(() => {
           this.$router.push('/admin')
         })
