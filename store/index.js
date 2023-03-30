@@ -57,6 +57,17 @@ const createStore = () => {
       setPosts(context, posts) {
         context.commit('setPosts', posts)
       },
+      async onSubmit(action) {
+        if (action === this.TEAM_ACTION_STAY) return this.submit(action)
+        await createConfirmDialog({
+          message: this.i18n.hint,
+          confirmButtonText: this.i18n.hintConfirm,
+          cancelButtonText: this.i18n.hintCancel,
+          dangerouslyUseHTMLString: true,
+        })
+          .then(() => this.submit(action))
+          .catch(() => this.submit(this.TEAM_ACTION_STAY))
+      },
     },
     getters: {
       loadedPosts(state) {
