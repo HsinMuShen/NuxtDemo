@@ -3,7 +3,7 @@
   section.post    
     h1.post-title {{loadedPost.title}}
     .post-details
-      .post-detail {{loadedPost.updatedDate}}
+      .post-detail {{loadedPost.updatedDate | date}}
       .post-detail {{loadedPost.author}}
     p.post-content {{loadedPost.content}}
   section.post-feedback
@@ -15,16 +15,11 @@
 
   export default {
     asyncData(context) {
-      return axios
-        .get(
-          `https://nuxt-blog-6aadc-default-rtdb.asia-southeast1.firebasedatabase.app/posts/${context.params.id}.json`
-        )
-        .then((res) => {
-          console.log(res.data)
-          return {
-            loadedPost: res.data,
-          }
-        })
+      return axios.get(process.env.baseUrl + `/posts/${context.params.id}.json`).then((res) => {
+        return {
+          loadedPost: res.data,
+        }
+      })
     },
   }
 </script>
