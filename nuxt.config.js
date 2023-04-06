@@ -1,7 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'practice_nuxt',
+    title: 'nuxt_project',
     htmlAttrs: {
       lang: 'en',
     },
@@ -15,6 +15,12 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap' },
     ],
+  },
+
+  loading: {
+    color: '#fa923f',
+    height: '5px',
+    duration: 5000,
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -37,6 +43,7 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+
   env: {
     baseUrl: process.env.BASE_URL || 'https://nuxt-blog-6aadc-default-rtdb.asia-southeast1.firebasedatabase.app',
   },
