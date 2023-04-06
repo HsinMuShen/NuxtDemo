@@ -13,15 +13,20 @@
       AdminPostForm,
     },
     asyncData(context) {
-      return axios.get(process.env.baseUrl + `/posts/${context.params.postId}.json`).then((res) => {
-        return {
-          loadedPost: { ...res.data, id: context.params.postId },
-        }
-      })
+      return axios
+        .get(
+          `https://nuxt-blog-6aadc-default-rtdb.asia-southeast1.firebasedatabase.app/posts/${context.params.postId}.json`
+        )
+        .then((res) => {
+          return {
+            loadedPost: { ...res.data, id: context.params.postId },
+          }
+        })
     },
     methods: {
       onSubmitted(postData) {
         this.$store.dispatch('updatePost', postData).then(() => {
+          console.log('updated', postData)
           this.$router.push('/admin')
         })
       },
