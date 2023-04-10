@@ -39,5 +39,6 @@ export default {
   build: {},
   env: {
     baseUrl: process.env.BASE_URL || 'https://nuxt-blog-6aadc-default-rtdb.asia-southeast1.firebasedatabase.app',
+    APIKey: 'AIzaSyBEFVYqJF4gar7WrhscA9YDizWyRi9LBgI',
   },
 }
