@@ -14,8 +14,6 @@
 </template>
 
 <script>
-  import axios from 'axios'
-
   export default {
     name: 'AdminAuthPage',
     layout: 'admin',
@@ -28,17 +26,14 @@
     },
     methods: {
       onSubmit() {
-        axios
-          .post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + process.env.APIKey, {
+        this.$store
+          .dispatch('authenticateUser', {
+            isLogin: this.isLogin,
             email: this.email,
             password: this.password,
-            returnSecureToken: true,
           })
-          .then((res) => {
-            console.log(res)
-          })
-          .catch((err) => {
-            console.log(err)
+          .then(() => {
+            this.$router.push('/admin')
           })
       },
     },
