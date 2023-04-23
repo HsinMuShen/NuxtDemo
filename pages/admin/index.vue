@@ -2,6 +2,7 @@
   .admin-page
     section.new-post
       app-button(@click='$router.push("/admin/new_post")') New Post
+      app-button(@click='onLogout') Logout
     section.existing-posts
       h1 Existing Posts
       post-list(:posts='loadedPosts',isAdmin)
@@ -9,9 +10,17 @@
 
 <script>
   export default {
+    layout: 'admin',
+    middleware: ['check-auth', 'auth'],
     computed: {
       loadedPosts() {
         return this.$store.getters.loadedPosts
+      },
+    },
+    methods: {
+      onLogout() {
+        this.$store.dispatch('logout')
+        this.$router.push('/admin/auth')
       },
     },
   }
