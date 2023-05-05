@@ -13,7 +13,6 @@
       TheHeader,
       TheSidenav,
     },
-    middleware: 'log',
     data() {
       return {
         disPlaySidenav: false,
