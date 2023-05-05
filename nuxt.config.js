@@ -1,3 +1,6 @@
+// eslint-disable-next-line nuxt/no-cjs-in-config
+const bodyParser = require('body-parser')
+
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -41,4 +44,5 @@ export default {
     baseUrl: process.env.BASE_URL || 'https://nuxt-blog-6aadc-default-rtdb.asia-southeast1.firebasedatabase.app',
     APIKey: 'AIzaSyBEFVYqJF4gar7WrhscA9YDizWyRi9LBgI',
   },
+  serverMiddleware: [bodyParser.json(), '~/api'],
 }
