@@ -9,9 +9,10 @@
 <script>
   import { ref } from '@nuxtjs/composition-api'
   import { uploadImage } from '~/utils/firebase/upload-image'
+  import { addData } from '~/utils/firebase/database'
 
   export default {
-    setup() {
+    setup(_, { emit }) {
       const editedAuthor = ref({
         name: '',
         profileImage: '',
@@ -25,13 +26,13 @@
           console.error('Error uploading image: ', error)
         }
       }
-      const onSubmit = () => {
+      const onSubmit = async () => {
         if (!editedAuthor.value.name) {
           alert('Please enter an author name')
           return
         }
-        // upload author to firebase db
-        console.log('Author: ', editedAuthor.value)
+        await addData('authors', editedAuthor.value)
+        emit('authorSubmit')
       }
       return {
         editedAuthor,
