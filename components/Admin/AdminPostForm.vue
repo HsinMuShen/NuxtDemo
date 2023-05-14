@@ -3,6 +3,8 @@
     app-control-input(v-model="editedPost.author") Author Name 
     app-control-input(v-model="editedPost.title") Title
     app-control-input(v-model="editedPost.thumbnail") Thumbnail Link
+    app-control-input(
+      v-model="editedPost.content") Upload Image
     app-control-input(control-type="textarea",
       v-model="editedPost.content") Content
     app-control-input(control-type="textarea",
