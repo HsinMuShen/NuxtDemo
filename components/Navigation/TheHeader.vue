@@ -1,95 +1,129 @@
-<template>
-<div class="header-container">
-  <header class="the-header">
-    <TheSideNavToggle @toggle="$emit('sidenavToggle')" />
-    <div class="logo">
-      <nuxt-link to="/">WD BLOG</nuxt-link>
-    </div>
-    <div class="spacer"></div>
-    <div class="navigation-items">
-      <ul class="nav-list">
-        <li class="nav-item"><nuxt-link to="/posts">Blog</nuxt-link></li>
-        <li class="nav-item"><nuxt-link to="/about">About</nuxt-link></li>
-        <li class="nav-item"><nuxt-link to="/admin">Admin</nuxt-link></li>
-      </ul>
-    </div>
-  </header>
-</div>
+<template lang="pug">
+  div(:class='$style["header-container"]')
+    header(:class='$style["the-header"]')
+      nuxt-link(to="/",:class='$style["header-banner"]')
+        div(:class='$style["header-banner-left"]')
+          div(:class='$style["header-banner-left-top"]')
+          div(:class='$style["header-banner-left-bottom"]')
+        div(:class='$style["header-banner-right"]')
+      //- the-side-nav-toggle(@toggle="$emit('sidenavToggle')")
+      div(:class='$style["navigation-items"]')
+        ul(:class='$style["nav-list"]')
+          li(:class='$style["nav-item"]')
+            nuxt-link(to="/posts") 首頁
+          li(:class='$style["nav-item"]')
+            nuxt-link(to="/posts") 畢業設計
+          li(:class='$style["nav-item"]')
+            nuxt-link(to="/about") 關於我們
+          li(:class='$style["nav-item"]')
+            nuxt-link(to="/admin") 管理員系統
 </template>
 
 <script>
-import TheSideNavToggle from "@/components/Navigation/TheSideNavToggle";
+  import TheSideNavToggle from '@/components/Navigation/TheSideNavToggle'
 
-export default {
-  name: "TheHeader",
-  components: {
-    TheSideNavToggle
+  export default {
+    name: 'TheHeader',
+    components: {
+      TheSideNavToggle,
+    },
   }
-};
 </script>
 
+<style lang="stylus" module>
+  $header-height = 200px
+  $banner-height = 150px
+  $banner-content-margin = 15px
+  $tabelt-width = 600px
+  $mobile-width = 450px
 
-<style scoped>
-.header-container {
-  height: 60px;
-}
+  .header-container
+    height $header-height
+    @media (max-width: $mobile-width)
+      height 120px
 
-.the-header {
-  width: 100%;
-  position: fixed;
-  height: 60px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  background-color: black;
-  z-index: 100;
-  box-sizing: border-box;
-  padding: 0 20px;
-}
+  .the-header
+    width 100%
+    position fixed
+    height $header-height
+    display flex
+    flex-direction column
+    justify-content flex-start
+    align-items center
+    background-color white
+    z-index 100
+    box-sizing border-box
+    @media (max-width: $mobile-width)
+      height 120px
 
-.logo {
-  margin: 0 10px;
-  font-size: 1.3rem;
-}
+  .header-banner
+    background-color #c31f1e
+    height $banner-height
+    width 100%
+    display flex
+    justify-content space-between
+    @media (max-width: $mobile-width)
+      height 70px
 
-.logo a {
-  text-decoration: none;
-  color: white;
-}
+  .header-banner-left
+    display flex
+    flex-direction column
+    justify-content space-between
+    margin $banner-content-margin
 
-.spacer {
-  flex: 1;
-}
+  .header-banner-left-top
+    background-image url('~static/header/left_top.png')
+    width 246px
+    height 40px
 
-.navigation-items {
-  display: none;
-}
+  .header-banner-left-bottom
+    background-image url('~static/header/left_bottom.png')
+    width 344px
+    height 10px
+    @media (max-width: $mobile-width)
+      display none
 
-@media (min-width: 768px) {
-  .navigation-items {
-    display: block;
-  }
-}
+  .header-banner-right
+    background-image url('~static/header/right.png')
+    width 172px
+    height ($banner-height - $banner-content-margin * 2)
+    background-size contain
+    background-repeat no-repeat
+    background-position bottom
+    margin $banner-content-margin
+    @media (max-width: $tabelt-width)
+      display none
 
-.nav-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-}
+  .navigation-items
+    width 100%
+    border-bottom 1px solid #bcbcbc
 
-.nav-item {
-  margin: 0 10px;
-}
+  @media (min-width: 768px)
+    .navigation-items
+      display block
 
-.nav-item a {
-  text-decoration: none;
-  color: white;
-}
+  .nav-list
+    list-style none
+    padding 0
+    margin 0
+    display flex
+    justify-content flex-start
 
-.nav-item a:hover,
-.nav-item a:active,
-.nav-item a.nuxt-link-active {
-  color: red;
-}
+  .nav-item
+    padding 0 10px
+    font-size 14px
+    font-weight bold
+    height 50px
+    display flex
+    justify-items center
+    align-items center
+
+  .nav-item a
+    text-decoration none
+    color black
+
+  .nav-item a:hover,
+  .nav-item a:active,
+  .nav-item a.nuxt-link-active
+    color #c31f1e
 </style>

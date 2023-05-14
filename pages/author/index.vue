@@ -1,17 +1,18 @@
 <template lang="pug">
   div
     upload-author(@authorSubmit="refreshAuthors")
-    ul
-      li(v-for="author in authors" :key="author.id") {{ author.name }}
+    authorsList(:authors="authors")
 </template>
 
 <script>
   import { computed, useAsync, useStore } from '@nuxtjs/composition-api'
-  import uploadAuthor from '../../../components/Admin/author/upload-author'
+  import uploadAuthor from '~/components/author/upload-author'
+  import authorsList from '~/components/author/authors-list'
 
   export default {
     components: {
       uploadAuthor,
+      authorsList,
     },
     setup() {
       const { dispatch, getters } = useStore()

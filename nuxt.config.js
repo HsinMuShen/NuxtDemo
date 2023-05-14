@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'practice_nuxt',
+    title: 'nckuarch109',
     htmlAttrs: {
       lang: 'en',
     },
@@ -15,8 +15,11 @@ export default {
       { name: 'format-detection', content: 'telephone=no' },
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap' },
+      { rel: 'icon', type: 'image/png', href: '/favicon.png' },
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+TC&family=Noto+Serif+TC:wght@900&display=swap',
+      },
     ],
   },
 
